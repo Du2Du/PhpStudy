@@ -13,8 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dateTime('created_at')->required();
+        Schema::create('logs', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('method')->required();
+            $table->string('url')->required();
+            $table->string('status')->required();
+            $table->integer('userId')->required();
         });
     }
 
@@ -25,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('created_at');
-        });
+        Schema::dropIfExists('logs');
     }
 };

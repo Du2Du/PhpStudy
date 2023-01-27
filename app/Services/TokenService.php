@@ -17,6 +17,7 @@ class TokenService
 
     static function decodeToken($token)
     {
+        dd($token);
         $decoded = JWT::decode($token, new Key(TOKEN_SECRET, 'HS256'));
         return json_decode(json_encode($decoded), true)['user'];
     }

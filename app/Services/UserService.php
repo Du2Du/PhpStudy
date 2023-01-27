@@ -41,7 +41,6 @@ class UserService
     static function transferir($usuarioId, $destinatarioId, $moneyQuantity)
     {
         if ($usuarioId === $destinatarioId) throw new BadRequestException("Usuário destinatário não pode ser igual ao usuário origem");
-        DB::beginTransaction();
         $usuario = User::find($usuarioId);
         if ($usuario->userType === 'WORKER') {
             throw new ForbiddenException("Usuário lojista não pode fazer transferências.");
@@ -50,6 +49,7 @@ class UserService
             return "Não foi possível realizar o transferência, confira seu saldo";
         }
         $destinatario = User::find($destinatarioId);
+        DB::beginTransaction();
         try {
             $usuario->update(['money' => $usuario->money - $moneyQuantity]);
             $destinatario->update(['money' => $destinatario->money + $moneyQuantity]);
